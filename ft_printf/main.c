@@ -6,14 +6,17 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/04/30 17:17:01 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/03 17:11:49 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "ft_printf.h"
 
-int main()
+int main(int argc, char **argv)
 {
-	ft_printf("jkghs%+0 12983.237lldwow%d salut\n", 16, 12);
+	ft_printf(argv[1], argv[2][0]);
+	printf("\n");
+	printf(argv[1], argv[2][0]);
 	return (0);
 }

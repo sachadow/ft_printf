@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 17:21:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/04/30 15:28:07 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/03 17:14:53 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ typedef struct	s_format
 
 typedef struct	s_big
 {
+	int			nbprint;
 	va_list		ap;
 	t_format	lists;
-	char		(*fun_ptr[14])(char *parse, struct s_big big, va_list ap);
+	void		(*fun_ptr[15])(struct s_big *big, char *parse);
 }				t_big;
 
 int				ft_printf(const char *format, ...);
@@ -56,5 +57,9 @@ int				informat(char parse, t_big big);
 void			put_flags(char *actual_flags[10], char *parse, t_big big);
 
 void			put_len(char *actual_len[3], char *parse, t_big big);
+
+void			printform(t_big *big, char *parse);
+
+void			print_char(t_big *big, char *parse);
 
 #endif
