@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/10 13:21:18 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/14 15:19:35 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <string.h>
 
-int main(int argc, char **argv)
+char	*ft_strrchr(const char *s, int c)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	int		a;
+	int		b;
+	char	ch;
+
+	a = 0;
+	b = 0;
+	ch = (char)c;
+	while (s[a] != '\0')
+	{
+		if (s[a] == ch)
+			b = a;
+		a++;
+	}
+	if (s[a] == ch)
+		return ((char*)(s + a));
+	if (s[b] == ch)
+		return ((char*)(s + b));
+	else
+		return (NULL);
 }

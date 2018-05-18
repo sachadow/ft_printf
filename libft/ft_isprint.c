@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/08 18:34:27 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/08 18:42:06 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
-
-int main(int argc, char **argv)
+int	ft_isprint(int c)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	if (c > 31 && c < 127)
+		return (1);
+	else
+		return (0);
 }

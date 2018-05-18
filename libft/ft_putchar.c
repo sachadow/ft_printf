@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/13 16:53:52 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/13 16:54:22 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <unistd.h>
 
-int main(int argc, char **argv)
+void	ft_putchar(char c)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	write(1, &c, 1);
 }

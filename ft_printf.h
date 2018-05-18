@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 17:21:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:06:46 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/18 17:02:57 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 #include "libft/libft.h"
 #include <stdarg.h>
+#include <wchar.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <limits.h>
 
 /*
 **	Structure qui donne differentes infos sur ce qu'on fait, et qui contient
@@ -43,6 +47,7 @@ typedef struct	s_big
 	int			nbprint;
 	va_list		ap;
 	t_format	lists;
+	int			compteur;
 	void		(*fun_ptr[15])(struct s_big *big, char *parse);
 }				t_big;
 
@@ -66,6 +71,22 @@ void			print_char(t_big *big, char *parse);
 
 void			print_int(t_big *big, char *parse);
 
+void			print_up_int(t_big *big, char *parse);
+
 void			print_percent(t_big *big, char *parse);
+
+void			print_string(t_big *big, char *parse);
+
+void			print_up_string(t_big *big, char *parse);
+
+void			print_ptr(t_big *big, char *parse);
+
+void			print_hex(t_big *big, char *parse);
+
+void			print_oct(t_big *big, char *parse);
+
+void			print_up_hex(t_big *big, char *parse);
+
+void			print_up_oct(t_big *big, char *parse);
 
 #endif

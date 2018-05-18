@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/10 18:57:27 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/14 14:00:07 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
-
-int main(int argc, char **argv)
+int	ft_strcmp(const char *s1, const char *s2)
 {
 	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+
+	a = 0;
+	while (s1[a] == s2[a] && s1[a] != '\0' && s2[a] != '\0')
+		a++;
+	return ((int)((unsigned char)s1[a] - (unsigned char)s2[a]));
 }

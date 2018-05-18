@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 16:59:50 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:32:41 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/18 14:29:38 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int		informat(char parse, t_big big)
 void	put_flags(char **actual_flags, char *parse, t_big big)
 {
 	int a;
+	int b;
 
 	a = 0;
 	while (!informat(parse[a], big) && parse[a] != 0)
@@ -99,9 +100,14 @@ void	put_flags(char **actual_flags, char *parse, t_big big)
 		{
 			if (parse[a] != '0')
 				ft_strncat(*actual_flags, parse + a, 1);
-			else if (!ft_isdigit(parse[a - 1]) && parse[a + 1] != 0
-					&& !ft_isdigit(parse[a + 1]))
-				ft_strncat(*actual_flags, parse + a, 1);
+			else if (parse[a - 1] != '0')
+			{
+				b = 0;
+				while (parse[a - b] == '0')
+					b++;
+				if (!ft_isdigit(parse[a - b]))
+					ft_strncat(*actual_flags, parse + a, 1);
+			}
 		}
 		a++;
 	}

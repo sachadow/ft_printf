@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/09 15:47:05 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/14 14:06:12 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <string.h>
 
-int main(int argc, char **argv)
+char	*ft_strncpy(char *dst, const char *src, size_t len)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	size_t	a;
+	size_t	b;
+
+	a = 0;
+	b = 0;
+	while (src[a] != '\0' && a < len)
+	{
+		dst[a] = src[a];
+		a++;
+	}
+	while (a < len)
+	{
+		dst[a] = '\0';
+		a++;
+	}
+	return (dst);
 }

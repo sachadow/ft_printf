@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 16:45:37 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:25:22 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/18 17:43:57 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*ft_printtype(char *parse, t_big *big)
 	int b;
 
 	a = 0;
-	b = 0;
 	put_flags(&(big->lists.actual_flags), parse, *big);
 	while (informat(parse[a], *big) != 1 && parse[a] != 0)
 	{
@@ -41,6 +40,7 @@ char	*ft_printtype(char *parse, t_big *big)
 			a++;
 		if (inlen(parse[a], *big) == 1)
 			put_len(&(big->lists.actual_len), &(parse[a]), *big);
+		b = 0;
 		while (b < 6)
 		{
 			if (ft_strncmp(&(parse[a]), big->lists.len[b],
@@ -82,18 +82,18 @@ void	startbig(t_big *big)
 	big->lists.len[4] = "j";
 	big->lists.len[5] = "z";
 	big->nbprint = 0;
-	big->fun_ptr[0] = &printform;
-	big->fun_ptr[1] = &printform;
-	big->fun_ptr[2] = &printform;
+	big->fun_ptr[0] = &print_string;
+	big->fun_ptr[1] = &print_up_string;
+	big->fun_ptr[2] = &print_ptr;
 	big->fun_ptr[3] = &print_int;
-	big->fun_ptr[4] = &print_int;
+	big->fun_ptr[4] = &print_up_int;
 	big->fun_ptr[5] = &print_int;
-	big->fun_ptr[6] = &printform;
-	big->fun_ptr[7] = &printform;
-	big->fun_ptr[8] = &printform;
-	big->fun_ptr[9] = &printform;
-	big->fun_ptr[10] = &printform;
-	big->fun_ptr[11] = &printform;
+	big->fun_ptr[6] = &print_oct;
+	big->fun_ptr[7] = &print_up_oct;
+	big->fun_ptr[8] = &print_up_int;
+	big->fun_ptr[9] = &print_up_int;
+	big->fun_ptr[10] = &print_hex;
+	big->fun_ptr[11] = &print_up_hex;
 	big->fun_ptr[12] = &print_char;
 	big->fun_ptr[13] = &print_char;
 	big->fun_ptr[14] = &print_percent;

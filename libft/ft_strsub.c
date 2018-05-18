@@ -1,25 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/13 16:10:49 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/15 14:23:22 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <string.h>
+#include <stdlib.h>
 
-int main(int argc, char **argv)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	char	*str;
+	size_t	a;
+	size_t	b;
+
+	a = 0;
+	b = (size_t)start;
+	if (s == 0)
+		return (NULL);
+	if (!(str = (char*)malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	while (a < len)
+	{
+		str[a] = s[b];
+		b++;
+		a++;
+	}
+	str[a] = '\0';
+	return (str);
 }

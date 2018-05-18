@@ -1,25 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/16 18:33:42 by sderet           ###   ########.fr       */
+/*   Created: 2017/11/13 13:29:35 by sderet            #+#    #+#             */
+/*   Updated: 2017/11/13 13:57:23 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wchar.h>
-#include <stdio.h>
-#include "ft_printf.h"
+#include <string.h>
 
-int main(int argc, char **argv)
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	int a;
-	a = ft_printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	a = printf(argv[1], 'y', 'c', 25);
-	printf("\n%d\n", a);
-	return (0);
+	unsigned char	*csrc;
+	unsigned char	*cdst;
+	size_t			a;
+	unsigned char	b;
+
+	a = 0;
+	csrc = (unsigned char*)src;
+	cdst = (unsigned char*)dst;
+	b = (unsigned char)c;
+	while (a < n)
+	{
+		cdst[a] = csrc[a];
+		if (b == csrc[a])
+			return (cdst + a + 1);
+		a++;
+	}
+	return (NULL);
 }
