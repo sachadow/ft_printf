@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 15:11:24 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 15:50:01 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/23 15:51:15 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,27 @@ void	printform(t_big *big, char *parse)
 
 void	print_percent(t_big *big, char *parse)
 {
+	int		a;
+	char	space;
+
 	parse += 0;
+	big += 0;
+	space = ' ';
+	a = 1;
+	if (inacflags('0', *big))
+		space = '0';
+	while (!inacflags('-', *big) && big->lists.minim > a)
+	{
+		a++;
+		ft_putchar(space);
+	}
 	ft_putchar('%');
-	big->nbprint++;
+	while (inacflags('-', *big) && big->lists.minim > a)
+	{
+		a++;
+		ft_putchar(' ');
+	}
+	big->nbprint += a;
 }
 
 
@@ -43,28 +61,28 @@ void	print_string(t_big *big, char *parse)
 	char	space;
 
 	if (*parse == 'S' || ft_strcmp(big->lists.actual_len, "l") == 0)
-		print_up_string(big, parse);
-	else
 	{
-		val = (char *)va_arg(big->ap, void *);
-		big += 0;
-		space = ' ';
-		a = ft_strlen(val);
-		if (inacflags('0', *big))
-			space = '0';
-		while (!inacflags('-', *big) && big->lists.minim > a)
-		{
-			a++;
-			ft_putchar(space);
-		}
-		ft_putstr(val);
-		while (inacflags('-', *big) && big->lists.minim > a)
-		{
-			a++;
-			ft_putchar(' ');
-		}
-		big->nbprint += a;
+		print_up_string(big, parse);
+		return ;
 	}
+	val = (char *)va_arg(big->ap, void *);
+	big += 0;
+	space = ' ';
+	a = ft_strlen(val);
+	if (inacflags('0', *big))
+		space = '0';
+	while (!inacflags('-', *big) && big->lists.minim > a)
+	{
+		a++;
+		ft_putchar(space);
+	}
+	ft_putstr(val);
+	while (inacflags('-', *big) && big->lists.minim > a)
+	{
+		a++;
+		ft_putchar(' ');
+	}
+	big->nbprint += a;
 }
 
 int		ft_wstrlen(wchar_t *str)

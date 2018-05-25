@@ -6,7 +6,7 @@
 #    By: sderet <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 16:05:33 by sderet            #+#    #+#              #
-#    Updated: 2018/05/18 17:14:31 by sderet           ###   ########.fr        #
+#    Updated: 2018/05/23 18:06:37 by sderet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,13 +22,16 @@ all : $(NAME)
 %.o: %.c
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
+objects: $(OBJ)
+
 $(NAME) : $(OBJ)
+	@touch libft.o
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 	@echo "$(NAME) built"
 
 clean :
-	@rm -f $(OBJ)
+	@rm -f $(OBJ) libft.o
 	@echo "$(NAME) clean successful"
 
 fclean : clean

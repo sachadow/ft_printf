@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 17:21:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 17:02:57 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/25 17:00:44 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct	s_big
 	va_list		ap;
 	t_format	lists;
 	int			compteur;
+	int			sign;
 	void		(*fun_ptr[15])(struct s_big *big, char *parse);
 }				t_big;
 

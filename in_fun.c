@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 16:59:50 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 14:29:38 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/25 17:48:43 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	put_flags(char **actual_flags, char *parse, t_big big)
 				b = 0;
 				while (parse[a - b] == '0')
 					b++;
-				if (!ft_isdigit(parse[a - b]))
+				if (!ft_isdigit(parse[a - b]) && parse[a - b] != '.')
 					ft_strncat(*actual_flags, parse + a, 1);
 			}
 		}

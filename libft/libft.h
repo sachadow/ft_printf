@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 16:04:45 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 17:28:30 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/23 16:46:29 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void			ft_putnbr_fd(int n, int fd);
 
 char			**ft_strsplit(char const *s, char c);
 
-char			*ft_itoa(long int n);
+char			*ft_itoa(long long int n);
 
-char			*ft_uitoa(unsigned long n);
+char			*ft_uitoa(unsigned long long n);
 
 void			*ft_memalloc(size_t size);
 

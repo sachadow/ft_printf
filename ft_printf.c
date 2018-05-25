@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 16:45:37 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 17:43:57 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/25 18:09:27 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ char	*ft_printtype(char *parse, t_big *big)
 	put_flags(&(big->lists.actual_flags), parse, *big);
 	while (informat(parse[a], *big) != 1 && parse[a] != 0)
 	{
-		while (inflags(parse[a], *big) == 1 && parse[a] != 0)
+		while (inflags(parse[a], *big) == 1 && parse[a] != 0 && parse[a] != '.')
 			a++;
 		if (ft_isdigit(parse[a]))
 			big->lists.minim = ft_atoi(&(parse[a]));
 		while (ft_isdigit(parse[a]))
 			a++;
-		if (parse[a] == '.' && parse[++a] != 0)
-			big->lists.prc = ft_atoi(&(parse[a]));
+		if (parse[a] == '.')
+			big->lists.prc = ft_atoi(&(parse[++a]));
 		while (ft_isdigit(parse[a]))
 			a++;
 		if (inlen(parse[a], *big) == 1)
@@ -66,15 +66,16 @@ void	bigset(t_big *big)
 		big->lists.actual_len[a] = '\0';
 	big->lists.minim = 0;
 	big->lists.prc = 0;
+	big->sign = 0;
 }
 
 void	startbig(t_big *big)
 {
-	big->lists.len = (char**)malloc(sizeof(char*) * 6);
+	big->lists.len = (char**)malloc(sizeof(char*) * 7);
 	big->lists.actual_flags = (char*)malloc(sizeof(char) * 10);
 	big->lists.actual_len = (char*)malloc(sizeof(char) * 3);
 	big->lists.formats = "sSpdDioOuUxXcC%";
-	big->lists.flags = "#-+ 0";
+	big->lists.flags = "#-+ 0.";
 	big->lists.len[0] = "hh";
 	big->lists.len[1] = "h";
 	big->lists.len[2] = "ll";
@@ -86,7 +87,7 @@ void	startbig(t_big *big)
 	big->fun_ptr[1] = &print_up_string;
 	big->fun_ptr[2] = &print_ptr;
 	big->fun_ptr[3] = &print_int;
-	big->fun_ptr[4] = &print_up_int;
+	big->fun_ptr[4] = &print_int;
 	big->fun_ptr[5] = &print_int;
 	big->fun_ptr[6] = &print_oct;
 	big->fun_ptr[7] = &print_up_oct;
@@ -122,7 +123,8 @@ int		ft_printf(const char *format, ...)
 			parse = ft_printtype((parse + 1), &(big));
 			tmp = parse;
 		}
-		parse++;
+		else
+			parse++;
 	}
 	ft_putstr(tmp);
 	big.nbprint += ft_strlen(tmp);

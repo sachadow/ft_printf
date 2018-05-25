@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:05:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/18 17:37:14 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/25 17:07:02 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	print_hex(t_big *big, char *parse)
 		val /= 16;
 	}
 	big->compteur = ft_strlen(result + a);
+	if (inacflags('#', *big))
+		big->compteur += 2;
 	if (inacflags('0', *big))
 		space = '0';
 	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
@@ -106,6 +108,8 @@ void	print_hex(t_big *big, char *parse)
 		big->compteur++;
 		ft_putchar(space);
 	}
+	if (inacflags('#', *big))
+		ft_putstr("0x");
 	a--;
 	while (result[++a] != 0)
 		ft_putchar(result[a]);
@@ -128,20 +132,20 @@ void	print_up_hex(t_big *big, char *parse)
 	parse += 0;
 	space = ' ';
 	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		val = (short int)va_arg(big->ap, void *);
+		val = (unsigned short int)va_arg(big->ap, void *);
 	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		val = (char)va_arg(big->ap, void *);
+		val = (unsigned char)va_arg(big->ap, void *);
 	else if (ft_strcmp(big->lists.actual_len, "l") == 0)
-		val = (long int)va_arg(big->ap, void *);
+		val = (unsigned long int)va_arg(big->ap, void *);
 	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		val = (long long int)va_arg(big->ap, void *);
+		val = (unsigned long long int)va_arg(big->ap, void *);
 	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		val = (intmax_t)va_arg(big->ap, void *);
+		val = (uintmax_t)va_arg(big->ap, void *);
 	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		val = (ssize_t)va_arg(big->ap, void *);
+		val = (size_t)va_arg(big->ap, void *);
 	else
-		val = (int)va_arg(big->ap, void *);
-	base = "0123456789abcdef";
+		val = (unsigned int)va_arg(big->ap, void *);
+	base = "0123456789ABCDEF";
 	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
 	result[--a] = '\0';
 	while(val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
@@ -150,6 +154,8 @@ void	print_up_hex(t_big *big, char *parse)
 		val /= 16;
 	}
 	big->compteur = ft_strlen(result + a);
+	if (inacflags('#', *big))
+		big->compteur += 2;
 	if (inacflags('0', *big))
 		space = '0';
 	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
@@ -164,6 +170,8 @@ void	print_up_hex(t_big *big, char *parse)
 		big->compteur++;
 		ft_putchar(space);
 	}
+	if (inacflags('#', *big))
+		ft_putstr("0X");
 	a--;
 	while (result[++a] != 0)
 		ft_putchar(result[a]);

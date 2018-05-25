@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 17:47:02 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/25 17:47:14 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 static long long	get_int_type(t_big *big, char *parse)
 {
 	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		return ((long long)(short int)va_arg(big->ap, int));
+		return ((unsigned long long)(unsigned short)va_arg(big->ap, void *));
 	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		return ((long long)(signed char)va_arg(big->ap, int));
+		return ((unsigned long long)(unsigned char)va_arg(big->ap, void *));
 	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		return ((long long)va_arg(big->ap, intmax_t));
+		return ((unsigned long long)va_arg(big->ap, uintmax_t));
 	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		return ((long long)va_arg(big->ap, ssize_t));
+		return ((unsigned long long)va_arg(big->ap, size_t));
 	else if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'D')
-		return ((long long)va_arg(big->ap, long));
+		return ((unsigned long long)va_arg(big->ap, unsigned long));
 	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		return ((long long)va_arg(big->ap, long long));
+		return ((unsigned long long)va_arg(big->ap, unsigned long long));
 	else
-		return ((long long)(int)va_arg(big->ap, void *));
+		return ((unsigned long long)(unsigned int)va_arg(big->ap, void *));
 }
 
 /*
@@ -91,17 +91,11 @@ static char			*add_int_width(t_big *big, char *val)
 		return (val);
 }
 
-static char			*add_int_misc(t_big *big, char *val, int minus)
+static char			*add_int_misc(t_big *big, char *val)
 {
 	char	*tmp;
 
-	if (minus == 1)
-	{
-		tmp = val;
-		val = ft_strjoin("-", val);
-		free(tmp);
-	}
-	else if (inacflags('+', *big) && val > 0)
+	if (inacflags('+', *big) && val > 0)
 	{
 		tmp = val;
 		val = ft_strjoin("+", val);
@@ -116,28 +110,17 @@ static char			*add_int_misc(t_big *big, char *val, int minus)
 	return (val);
 }
 
-void				print_int(t_big *big, char *parse)
+void				print_up_int(t_big *big, char *parse)
 {
 	int		val;
 	char	*str;
-	char	*tmp;
-	int		minus;
 
-	minus = 0;
 	val = get_int_type(big, parse);
-	str = ft_itoa(val);
-	if (val < 0)
-	{
-		minus = 1;
-		tmp = str;
-		str = ft_strsub(str, 1, ft_strlen(str));
-		free(tmp);
-		big->sign = 1;
-	}
-	else if (inacflags('+', *big) && val > 0)
+	str = ft_uitoa(val);
+	if (inacflags('+', *big) && val > 0)
 		big->sign = 1;
 	str = add_int_prc(big, str);
-	str = add_int_misc(big, str, minus);
+	str = add_int_misc(big, str);
 	str = add_int_width(big, str);
 	ft_putstr(str);
 	big->nbprint += ft_strlen(str);
