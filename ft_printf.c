@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/15 16:45:37 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 18:09:27 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 18:56:49 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,15 @@ char	*ft_printtype(char *parse, t_big *big)
 {
 	int	a;
 	int b;
+	int c;
 
 	a = 0;
+	c = 1;
 	put_flags(&(big->lists.actual_flags), parse, *big);
 	while (informat(parse[a], *big) != 1 && parse[a] != 0)
 	{
-		while (inflags(parse[a], *big) == 1 && parse[a] != 0 && parse[a] != '.')
-			a++;
-		if (ft_isdigit(parse[a]))
-			big->lists.minim = ft_atoi(&(parse[a]));
-		while (ft_isdigit(parse[a]))
-			a++;
-		if (parse[a] == '.')
-			big->lists.prc = ft_atoi(&(parse[++a]));
-		while (ft_isdigit(parse[a]))
-			a++;
-		if (inlen(parse[a], *big) == 1)
-			put_len(&(big->lists.actual_len), &(parse[a]), *big);
+		c = a;
+		a = inside_printtype(parse, a, big);
 		b = 0;
 		while (b < 6)
 		{
@@ -48,10 +40,29 @@ char	*ft_printtype(char *parse, t_big *big)
 				a += ft_strlen(big->lists.len[b]);
 			b++;
 		}
+		if (c == a)
+			break ;
 	}
 	if (informat(parse[a], *big))
 		printform(big, parse + a);
-	return (parse + a + 1);
+	return ((c == a ? parse + a : parse + a + 1));
+}
+
+int		inside_printtype(char *parse, int a, t_big *big)
+{
+	while (inflags(parse[a], *big) == 1 && parse[a] != 0 && parse[a] != '.')
+		a++;
+	if (ft_isdigit(parse[a]))
+		big->lists.minim = ft_atoi(&(parse[a]));
+	while (ft_isdigit(parse[a]))
+		a++;
+	if (parse[a] == '.')
+		big->lists.prc = ft_atoi(&(parse[++a]));
+	while (ft_isdigit(parse[a]))
+		a++;
+	if (inlen(parse[a], *big) == 1)
+		put_len(&(big->lists.actual_len), &(parse[a]), *big);
+	return (a);
 }
 
 void	bigset(t_big *big)
@@ -69,37 +80,6 @@ void	bigset(t_big *big)
 	big->sign = 0;
 }
 
-void	startbig(t_big *big)
-{
-	big->lists.len = (char**)malloc(sizeof(char*) * 7);
-	big->lists.actual_flags = (char*)malloc(sizeof(char) * 10);
-	big->lists.actual_len = (char*)malloc(sizeof(char) * 3);
-	big->lists.formats = "sSpdDioOuUxXcC%";
-	big->lists.flags = "#-+ 0.";
-	big->lists.len[0] = "hh";
-	big->lists.len[1] = "h";
-	big->lists.len[2] = "ll";
-	big->lists.len[3] = "l";
-	big->lists.len[4] = "j";
-	big->lists.len[5] = "z";
-	big->nbprint = 0;
-	big->fun_ptr[0] = &print_string;
-	big->fun_ptr[1] = &print_up_string;
-	big->fun_ptr[2] = &print_ptr;
-	big->fun_ptr[3] = &print_int;
-	big->fun_ptr[4] = &print_int;
-	big->fun_ptr[5] = &print_int;
-	big->fun_ptr[6] = &print_oct;
-	big->fun_ptr[7] = &print_up_oct;
-	big->fun_ptr[8] = &print_up_int;
-	big->fun_ptr[9] = &print_up_int;
-	big->fun_ptr[10] = &print_hex;
-	big->fun_ptr[11] = &print_up_hex;
-	big->fun_ptr[12] = &print_char;
-	big->fun_ptr[13] = &print_char;
-	big->fun_ptr[14] = &print_percent;
-}
-
 int		ft_printf(const char *format, ...)
 {
 	char		*parse;
@@ -112,22 +92,7 @@ int		ft_printf(const char *format, ...)
 	parse = ft_strjoin(format, "");
 	begin = parse;
 	tmp = parse;
-	while (*parse != 0)
-	{
-		if (*parse == '%')
-		{
-			bigset(&big);
-			*parse = 0;
-			ft_putstr(tmp);
-			big.nbprint += ft_strlen(tmp);
-			parse = ft_printtype((parse + 1), &(big));
-			tmp = parse;
-		}
-		else
-			parse++;
-	}
-	ft_putstr(tmp);
-	big.nbprint += ft_strlen(tmp);
+	loop(parse, tmp, &big);
 	free(big.lists.actual_flags);
 	free(big.lists.actual_len);
 	free(big.lists.len);

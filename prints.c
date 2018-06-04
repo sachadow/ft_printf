@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/03 15:11:24 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/23 15:51:15 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 18:24:53 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,83 +53,14 @@ void	print_percent(t_big *big, char *parse)
 	big->nbprint += a;
 }
 
-
-void	print_string(t_big *big, char *parse)
-{
-	char	*val;
-	int		a;
-	char	space;
-
-	if (*parse == 'S' || ft_strcmp(big->lists.actual_len, "l") == 0)
-	{
-		print_up_string(big, parse);
-		return ;
-	}
-	val = (char *)va_arg(big->ap, void *);
-	big += 0;
-	space = ' ';
-	a = ft_strlen(val);
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > a)
-	{
-		a++;
-		ft_putchar(space);
-	}
-	ft_putstr(val);
-	while (inacflags('-', *big) && big->lists.minim > a)
-	{
-		a++;
-		ft_putchar(' ');
-	}
-	big->nbprint += a;
-}
-
-int		ft_wstrlen(wchar_t *str)
-{
-	int a;
-
-	a = 0;
-	while (str[a] != 0)
-		a++;
-	return (a);
-}
-
-void	ft_putwstr(wchar_t *str)
+void	ft_putwstr(wchar_t const *str)
 {
 	int a;
 
 	a = 0;
 	while (str[a] != 0)
 	{
-		write(1, &(str[a]), 1);
+		ft_putwchar(str[a]);
 		a++;
 	}
-}
-
-void	print_up_string(t_big *big, char *parse)
-{
-	wchar_t	*val;
-	int		a;
-	char	space;
-
-	val = (wchar_t *)va_arg(big->ap, void *);
-	big += 0;
-	parse += 0;
-	space = ' ';
-	a = ft_wstrlen(val);
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > a)
-	{
-		a++;
-		ft_putchar(space);
-	}
-	ft_putwstr(val);
-	while (inacflags('-', *big) && big->lists.minim > a)
-	{
-		a++;
-		ft_putchar(' ');
-	}
-	big->nbprint += a;
 }

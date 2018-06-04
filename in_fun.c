@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/12 16:59:50 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 17:48:43 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 18:36:47 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,24 +109,6 @@ void	put_flags(char **actual_flags, char *parse, t_big big)
 					ft_strncat(*actual_flags, parse + a, 1);
 			}
 		}
-		a++;
-	}
-}
-
-/*
-**	Puts length modifiers in actual_len based on the ones in big.lists.len
-*/
-
-void	put_len(char **actual_len, char *parse, t_big big)
-{
-	int a;
-
-	a = 0;
-	while (a < 6)
-	{
-		if (ft_strncmp(parse, big.lists.len[a],
-					ft_strlen(big.lists.len[a])) == 0)
-			ft_strncpy(*actual_len, parse, ft_strlen(big.lists.len[a]));
 		a++;
 	}
 }

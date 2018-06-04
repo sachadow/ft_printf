@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 17:47:14 by sderet           ###   ########.fr       */
+/*   Updated: 2018/05/28 18:43:58 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static long long	get_int_type(t_big *big, char *parse)
 {
 	if (ft_strcmp(big->lists.actual_len, "h") == 0)
 		return ((unsigned long long)(unsigned short)va_arg(big->ap, void *));
+	else if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'D')
+		return ((unsigned long long)va_arg(big->ap, unsigned long));
 	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
 		return ((unsigned long long)(unsigned char)va_arg(big->ap, void *));
 	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
 		return ((unsigned long long)va_arg(big->ap, uintmax_t));
 	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
 		return ((unsigned long long)va_arg(big->ap, size_t));
-	else if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'D')
-		return ((unsigned long long)va_arg(big->ap, unsigned long));
 	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
 		return ((unsigned long long)va_arg(big->ap, unsigned long long));
 	else
@@ -112,8 +112,8 @@ static char			*add_int_misc(t_big *big, char *val)
 
 void				print_up_int(t_big *big, char *parse)
 {
-	int		val;
-	char	*str;
+	unsigned long long	val;
+	char				*str;
 
 	val = get_int_type(big, parse);
 	str = ft_uitoa(val);

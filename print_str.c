@@ -6,29 +6,11 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 19:27:43 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 15:18:29 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-static long long	get_int_type(t_big *big, char *parse)
-{
-	if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'D')
-		return ((long long)va_arg(big->ap, long));
-	else if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		return ((long long)(short int)va_arg(big->ap, int));
-	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		return ((long long)(signed char)va_arg(big->ap, int));
-	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		return ((long long)va_arg(big->ap, intmax_t));
-	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		return ((long long)va_arg(big->ap, ssize_t));
-	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		return ((long long)va_arg(big->ap, long long));
-	else
-		return ((long long)(int)va_arg(big->ap, void *));
-}
 
 /*
 **	Adds all the necessary 0's at the beginning of the string val.
@@ -41,7 +23,10 @@ static char			*add_int_prc(t_big *big, char *val)
 	char	*zeroes_to_add;
 	char	*result;
 
-	total_length = intprc(big, val);
+	if (inacflags('0', *big) && !inacflags('-', *big))
+		total_length = big->lists.minim - big->sign;
+	else
+		return (val);
 	zeroes_length = total_length - ft_strlen(val);
 	if (zeroes_length > 0)
 	{
@@ -87,51 +72,32 @@ static char			*add_int_width(t_big *big, char *val)
 		return (val);
 }
 
-static char			*add_int_misc(t_big *big, char *val, int minus)
+static char			*add_int_misc(t_big *big, char *val)
 {
-	char	*tmp;
+	int a;
 
-	if (minus == 1)
+	if (inacflags('.', *big))
 	{
-		tmp = val;
-		val = ft_strjoin("-", val);
-		free(tmp);
-	}
-	else if (inacflags('+', *big) && val > 0)
-	{
-		tmp = val;
-		val = ft_strjoin("+", val);
-		free(tmp);
-	}
-	else if (inacflags(' ', *big))
-	{
-		tmp = val;
-		val = ft_strjoin(" ", val);
-		free(tmp);
+		a = 0;
+		while (a < big->lists.prc)
+			a++;
+		val[a] = 0;
 	}
 	return (val);
 }
 
-void				print_int(t_big *big, char *parse)
+void				print_str(t_big *big, char *parse)
 {
-	long long	val;
-	int			a;
 	char		*str;
-	char		*tmp;
-	int			minus;
 
-	minus = 0;
-	val = get_int_type(big, parse);
-	if (val == 0 && inacflags('.', *big) && big->lists.prc == 0)
-		str = ft_strnew(1);
-	else
-		str = ft_itoa(val);
-	if (val < 0)
-		str = annint(str, &minus, a, big);
-	else if (inacflags('+', *big) && val > 0)
-		big->sign = 1;
+	if (*parse == 'S' || ft_strcmp(big->lists.actual_len, "l") == 0)
+		return (print_wstr(big, parse));
+	str = (char*)va_arg(big->ap, void*);
+	if (str == 0)
+		str = ft_strdup("(null)");
+	str = ft_strdup(str);
+	str = add_int_misc(big, str);
 	str = add_int_prc(big, str);
-	str = add_int_misc(big, str, minus);
 	str = add_int_width(big, str);
 	ft_putstr(str);
 	big->nbprint += ft_strlen(str);

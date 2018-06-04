@@ -6,12 +6,12 @@
 #    By: sderet <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/13 15:33:21 by sderet            #+#    #+#              #
-#    Updated: 2018/05/25 17:05:20 by sderet           ###   ########.fr        #
+#    Updated: 2018/06/04 19:32:32 by sderet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-SRCS = ft_printf.c in_fun.c print_char.c print_int.c print_ptr.c prints.c print_signed_int.c
+SRCS = ft_printf.c in_fun.c print_char.c print_int.c print_ptr.c prints.c print_signed_int.c print_hex.c print_oct.c  print_dec.c print_str.c print_wstr.c start_big.c annexe_funchar.c annexe_dec.c annexe_printf.c annexe_hex.c annexe_ptr.c annexe_int.c annexe_oct.c
 HEAD = ft_printf.h
 LIBS = -L./libft -lft
 FRAMEW =

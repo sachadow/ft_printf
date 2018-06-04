@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   annexe_ptr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 16:10:49 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/29 18:34:58 by sderet           ###   ########.fr       */
+/*   Created: 2018/06/04 19:14:33 by sderet            #+#    #+#             */
+/*   Updated: 2018/06/04 19:16:25 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdlib.h>
+#include "ft_printf.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+char	*annptr(char *str, unsigned long long val, int a, char *base)
 {
-	char	*str;
-	size_t	a;
-	size_t	b;
+	char *tmp;
 
-	a = 0;
-	b = (size_t)start;
-	if (s == 0)
-		return (NULL);
-	if (!(str = (char*)malloc(sizeof(char) * (len))))
-		return (NULL);
-	while (a < len)
+	if (!(str = (char*)malloc(1 + (sizeof(val)
+						* CHAR_BIT + 2) / 3 + 1)))
+		exit(0);
+	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
+	str[--a] = '\0';
+	while (val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
 	{
-		str[a] = s[b];
-		b++;
-		a++;
+		str[--a] = base[val % 16];
+		val /= 16;
 	}
-	str[len - 1] = '\0';
+	tmp = str;
+	str = ft_strjoin(str + a, "");
+	free(tmp);
 	return (str);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_int.c                                        :+:      :+:    :+:   */
+/*   print_oct.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 19:27:43 by sderet           ###   ########.fr       */
+/*   Created: 2018/05/28 18:15:06 by sderet            #+#    #+#             */
+/*   Updated: 2018/06/04 19:32:00 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 
 static long long	get_int_type(t_big *big, char *parse)
 {
-	if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'D')
-		return ((long long)va_arg(big->ap, long));
+	if (ft_strcmp(big->lists.actual_len, "l") == 0 || *parse == 'O')
+		return ((unsigned long long)va_arg(big->ap, unsigned long));
 	else if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		return ((long long)(short int)va_arg(big->ap, int));
+		return ((unsigned long long)(unsigned short int)va_arg(big->ap, int));
 	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		return ((long long)(signed char)va_arg(big->ap, int));
+		return ((unsigned long long)(unsigned char)va_arg(big->ap, int));
 	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		return ((long long)va_arg(big->ap, intmax_t));
+		return ((unsigned long long)va_arg(big->ap, uintmax_t));
 	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		return ((long long)va_arg(big->ap, ssize_t));
+		return ((unsigned long long)va_arg(big->ap, size_t));
 	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		return ((long long)va_arg(big->ap, long long));
+		return ((unsigned long long)va_arg(big->ap, unsigned long long));
 	else
-		return ((long long)(int)va_arg(big->ap, void *));
+		return ((unsigned long long)(unsigned int)va_arg(big->ap, void *));
 }
 
 /*
@@ -41,7 +41,12 @@ static char			*add_int_prc(t_big *big, char *val)
 	char	*zeroes_to_add;
 	char	*result;
 
-	total_length = intprc(big, val);
+	if (inacflags('0', *big) && big->lists.minim > big->lists.prc &&
+			!inacflags('-', *big) && big->lists.prc == 0 &&
+			!inacflags('.', *big))
+		total_length = big->lists.minim - big->sign;
+	else
+		total_length = big->lists.prc;
 	zeroes_length = total_length - ft_strlen(val);
 	if (zeroes_length > 0)
 	{
@@ -87,51 +92,36 @@ static char			*add_int_width(t_big *big, char *val)
 		return (val);
 }
 
-static char			*add_int_misc(t_big *big, char *val, int minus)
+static char			*add_int_misc(t_big *big, char *val)
 {
 	char	*tmp;
 
-	if (minus == 1)
+	if (inacflags('#', *big) && val[0] != '0'
+			&& (ft_atoi(val) != 0 || val[0] == 0))
 	{
 		tmp = val;
-		val = ft_strjoin("-", val);
-		free(tmp);
-	}
-	else if (inacflags('+', *big) && val > 0)
-	{
-		tmp = val;
-		val = ft_strjoin("+", val);
-		free(tmp);
-	}
-	else if (inacflags(' ', *big))
-	{
-		tmp = val;
-		val = ft_strjoin(" ", val);
+		val = ft_strjoin("0", val);
 		free(tmp);
 	}
 	return (val);
 }
 
-void				print_int(t_big *big, char *parse)
+void				print_oct(t_big *big, char *parse)
 {
-	long long	val;
-	int			a;
-	char		*str;
-	char		*tmp;
-	int			minus;
+	unsigned long long	val;
+	char				*str;
+	char				*tmp;
+	char				*base;
+	int					a;
 
-	minus = 0;
 	val = get_int_type(big, parse);
+	base = "012345678";
 	if (val == 0 && inacflags('.', *big) && big->lists.prc == 0)
 		str = ft_strnew(1);
 	else
-		str = ft_itoa(val);
-	if (val < 0)
-		str = annint(str, &minus, a, big);
-	else if (inacflags('+', *big) && val > 0)
-		big->sign = 1;
+		str = annoct(str, val, a, base);
 	str = add_int_prc(big, str);
-	str = add_int_misc(big, str, minus);
+	str = add_int_misc(big, str);
 	str = add_int_width(big, str);
 	ft_putstr(str);
 	big->nbprint += ft_strlen(str);

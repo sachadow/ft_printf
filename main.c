@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 14:06:01 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 18:00:16 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 19:28:51 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 int main(int argc, char **argv)
 {
 	int a;
-	char *test;
+	char c;
 
-	test = "test";
 	argc += 0;
-	a = ft_printf(argv[1], -2147483649, 2, 3);
+	argv += 0;
+	c = 0;
+	a = ft_printf("%d", 42);
 	printf("\n%d\n", a);
-	a = printf(argv[1], -2147483649, 2, 3);
+	a = printf("%d", 42);
 	printf("\n%d\n", a);
 	return (0);
 }

@@ -6,296 +6,104 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:05:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/25 17:07:02 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/04 19:18:22 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	print_ptr(t_big *big, char *parse)
+/*
+**	Adds all the necessary 0's at the beginning of the string val.
+*/
+
+static char			*add_int_prc(t_big *big, char *val, unsigned long long nbr)
 {
-	char			*base;
-	unsigned long	val;
-	char			result[9];
-	int				a;
-	char			space;
+	int		total_length;
+	int		zeroes_length;
+	char	*zeroes_to_add;
+	char	*result;
+
+	if (inacflags('0', *big) && big->lists.minim > big->lists.prc &&
+			!inacflags('-', *big) && big->lists.prc == 0)
+		total_length = big->lists.minim - big->sign;
+	else
+		total_length = big->lists.prc;
+	total_length -= (nbr != 0 || inacflags('.', *big) ? 0 : 2);
+	zeroes_length = total_length - ft_strlen(val);
+	if (zeroes_length > 0)
+	{
+		zeroes_to_add = (char*)malloc(sizeof(char) * (zeroes_length + 1));
+		zeroes_to_add[zeroes_length] = '\0';
+		ft_memset(zeroes_to_add, '0', sizeof(char) * zeroes_length);
+		result = ft_strjoin(zeroes_to_add, val);
+		free(val);
+		free(zeroes_to_add);
+		return (result);
+	}
+	else
+		return (val);
+}
+
+/*
+**	Adds all the necessary ' ' (spaces) at the beginning of the string val.
+*/
+
+static char			*add_int_width(t_big *big, char *val)
+{
+	int		total_length;
+	int		spaces_length;
+	char	*spaces_to_add;
+	char	*result;
+
+	total_length = big->lists.minim;
+	spaces_length = total_length - ft_strlen(val);
+	if (spaces_length > 0)
+	{
+		spaces_to_add = (char*)malloc(sizeof(char) * (spaces_length + 1));
+		spaces_to_add[spaces_length] = '\0';
+		ft_memset(spaces_to_add, ' ', sizeof(char) * spaces_length);
+		if (!inacflags('-', *big))
+			result = ft_strjoin(spaces_to_add, val);
+		else
+			result = ft_strjoin(val, spaces_to_add);
+		free(val);
+		free(spaces_to_add);
+		return (result);
+	}
+	else
+		return (val);
+}
+
+static char			*add_int_misc(t_big *big, char *val)
+{
+	char	*tmp;
+
+	big += 0;
+	tmp = val;
+	val = ft_strjoin("0x", val);
+	free(tmp);
+	return (val);
+}
+
+void				print_ptr(t_big *big, char *parse)
+{
+	char				*base;
+	unsigned long long	val;
+	char				*tmp;
+	char				*str;
+	int					a;
 
 	parse += 0;
-	a = 8;
-	space = ' ';
-	big->compteur = 11;
-	val = (unsigned long)va_arg(big->ap, void *);
+	val = (unsigned long long)va_arg(big->ap, void *);
 	base = "0123456789abcdef";
-	while ((val / 16) > 0 || a >= 8)
-	{
-		result[a] = base[(val % 16)];
-		val /= 16;
-		a--;
-	}
-	result[a] = base[(val % 16)];
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == ' ')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	ft_putstr("0x");
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == '0')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	a = -1;
-	while (++a < 9)
-		ft_putchar(result[a]);
-	while (inacflags('-', *big) && big->lists.minim > big->compteur)
-	{
-		big->compteur++;
-		ft_putchar(' ');
-	}
-	big->nbprint += big->compteur;
-}
-
-void	print_hex(t_big *big, char *parse)
-{
-	char			*base;
-	unsigned long	val;
-	char			result[1 + (sizeof(unsigned long) * CHAR_BIT + 2) / 3 + 1];
-	int				a;
-	char			space;
-
-	parse += 0;
-	space = ' ';
-	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		val = (unsigned short int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		val = (unsigned char)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "l") == 0)
-		val = (unsigned long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		val = (unsigned long long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		val = (uintmax_t)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		val = (size_t)va_arg(big->ap, void *);
+	if (val == 0 && inacflags('.', *big) && big->lists.prc == 0)
+		str = ft_strnew(1);
 	else
-		val = (unsigned int)va_arg(big->ap, void *);
-	base = "0123456789abcdef";
-	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
-	result[--a] = '\0';
-	while(val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
-	{
-		result[--a] = base[val % 16];
-		val /= 16;
-	}
-	big->compteur = ft_strlen(result + a);
-	if (inacflags('#', *big))
-		big->compteur += 2;
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == ' ')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == '0')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	if (inacflags('#', *big))
-		ft_putstr("0x");
-	a--;
-	while (result[++a] != 0)
-		ft_putchar(result[a]);
-	while (inacflags('-', *big) && big->lists.minim > big->compteur)
-	{
-		big->compteur++;
-		ft_putchar(' ');
-	}
-	big->nbprint += big->compteur;
+		str = annptr(str, val, a, base);
+	str = add_int_prc(big, str, val);
+	str = add_int_misc(big, str);
+	str = add_int_width(big, str);
+	ft_putstr(str);
+	big->nbprint += ft_strlen(str);
+	free(str);
 }
-
-void	print_up_hex(t_big *big, char *parse)
-{
-	char			*base;
-	unsigned long	val;
-	char			result[1 + (sizeof(unsigned long) * CHAR_BIT + 2) / 3 + 1];
-	int				a;
-	char			space;
-
-	parse += 0;
-	space = ' ';
-	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		val = (unsigned short int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		val = (unsigned char)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "l") == 0)
-		val = (unsigned long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		val = (unsigned long long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		val = (uintmax_t)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		val = (size_t)va_arg(big->ap, void *);
-	else
-		val = (unsigned int)va_arg(big->ap, void *);
-	base = "0123456789ABCDEF";
-	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
-	result[--a] = '\0';
-	while(val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
-	{
-		result[--a] = base[val % 16];
-		val /= 16;
-	}
-	big->compteur = ft_strlen(result + a);
-	if (inacflags('#', *big))
-		big->compteur += 2;
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == ' ')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == '0')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	if (inacflags('#', *big))
-		ft_putstr("0X");
-	a--;
-	while (result[++a] != 0)
-		ft_putchar(result[a]);
-	while (inacflags('-', *big) && big->lists.minim > big->compteur)
-	{
-		big->compteur++;
-		ft_putchar(' ');
-	}
-	big->nbprint += big->compteur;
-}
-
-void	print_oct(t_big *big, char *parse)
-{
-	char			*base;
-	unsigned long	val;
-	char			result[1 + (sizeof(unsigned long) * CHAR_BIT + 2) / 3 + 1];
-	int				a;
-	char			space;
-
-	parse += 0;
-	space = ' ';
-	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		val = (unsigned short int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		val = (unsigned char)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "l") == 0)
-		val = (unsigned long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		val = (unsigned long long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		val = (uintmax_t)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		val = (size_t)va_arg(big->ap, void *);
-	else
-		val = (unsigned int)va_arg(big->ap, void *);
-	base = "012345678";
-	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
-	result[--a] = '\0';
-	while(val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
-	{
-		result[--a] = base[val % 8];
-		val /= 8;
-	}
-	big->compteur = ft_strlen(result + a);
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == ' ')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == '0')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	a--;
-	while (result[++a] != 0)
-		ft_putchar(result[a]);
-	while (inacflags('-', *big) && big->lists.minim > big->compteur)
-	{
-		big->compteur++;
-		ft_putchar(' ');
-	}
-	big->nbprint += big->compteur;
-}
-
-void	print_up_oct(t_big *big, char *parse)
-{
-	char			*base;
-	unsigned long	val;
-	char			result[1 + (sizeof(unsigned long) * CHAR_BIT + 2) / 3 + 1];
-	int				a;
-	char			space;
-
-	parse += 0;
-	space = ' ';
-	if (ft_strcmp(big->lists.actual_len, "h") == 0)
-		val = (short int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "hh") == 0)
-		val = (char)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "l") == 0)
-		val = (long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "ll") == 0)
-		val = (long long int)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "j") == 0)
-		val = (intmax_t)va_arg(big->ap, void *);
-	else if (ft_strcmp(big->lists.actual_len, "z") == 0)
-		val = (ssize_t)va_arg(big->ap, void *);
-	else
-		val = (int)va_arg(big->ap, void *);
-	base = "012345678";
-	a = 1 + (sizeof(val) * CHAR_BIT + 2) / 3 + 1;
-	result[--a] = '\0';
-	while(val != 0 || a == (sizeof(val) * CHAR_BIT + 2) / 3 + 1)
-	{
-		result[--a] = base[val % 8];
-		val /= 8;
-	}
-	big->compteur = ft_strlen(result + a);
-	if (inacflags('0', *big))
-		space = '0';
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == ' ')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	while (!inacflags('-', *big) && big->lists.minim > big->compteur &&
-			space == '0')
-	{
-		big->compteur++;
-		ft_putchar(space);
-	}
-	a--;
-	while (result[++a] != 0)
-		ft_putchar(result[a]);
-	while (inacflags('-', *big) && big->lists.minim > big->compteur)
-	{
-		big->compteur++;
-		ft_putchar(' ');
-	}
-	big->nbprint += big->compteur;
-}
-

@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   annexe_printf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 16:10:49 by sderet            #+#    #+#             */
-/*   Updated: 2018/05/29 18:34:58 by sderet           ###   ########.fr       */
+/*   Created: 2018/06/04 18:48:12 by sderet            #+#    #+#             */
+/*   Updated: 2018/06/04 18:53:49 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <stdlib.h>
+#include "ft_printf.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+void	loop(char *parse, char *tmp, t_big *big)
 {
-	char	*str;
-	size_t	a;
-	size_t	b;
-
-	a = 0;
-	b = (size_t)start;
-	if (s == 0)
-		return (NULL);
-	if (!(str = (char*)malloc(sizeof(char) * (len))))
-		return (NULL);
-	while (a < len)
+	while (*parse != 0)
 	{
-		str[a] = s[b];
-		b++;
-		a++;
+		if (*parse == '%')
+		{
+			bigset(big);
+			*parse = 0;
+			ft_putstr(tmp);
+			big->nbprint += ft_strlen(tmp);
+			parse = ft_printtype((parse + 1), big);
+			tmp = parse;
+		}
+		else
+			parse++;
 	}
-	str[len - 1] = '\0';
-	return (str);
+	ft_putstr(tmp);
+	big->nbprint += ft_strlen(tmp);
 }
