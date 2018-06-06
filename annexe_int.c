@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 19:14:33 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 19:29:46 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 15:37:56 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ int		intprc(t_big *big, char *val)
 {
 	int total_length;
 
-	if ((inacflags('0', *big) && big->lists.minim > big->lists.prc &&
+	if (((inacflags('0', *big) && big->lists.minim > big->lists.prc &&
 			!inacflags('-', *big) && big->lists.prc == 0 &&
 			(inacflags(' ', *big) && ft_atoi(val) >= 0)) ||
-			(inacflags('+', *big) && ft_atoi(val) == 0))
+			(inacflags('+', *big) && ft_atoi(val) == 0)) &&
+			!inacflags('.', *big))
 		total_length = big->lists.minim - big->sign - 1;
 	else if (inacflags('0', *big) && big->lists.minim > big->lists.prc &&
-			!inacflags('-', *big) && big->lists.prc == 0)
+			!inacflags('-', *big) && !inacflags('.', *big))
 		total_length = big->lists.minim - big->sign;
 	else
 		total_length = big->lists.prc;

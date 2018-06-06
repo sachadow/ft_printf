@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 15:18:29 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 15:46:34 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void				print_str(t_big *big, char *parse)
 	str = (char*)va_arg(big->ap, void*);
 	if (str == 0)
 		str = ft_strdup("(null)");
-	str = ft_strdup(str);
+	else
+		str = ft_strdup(str);
 	str = add_int_misc(big, str);
 	str = add_int_prc(big, str);
 	str = add_int_width(big, str);
