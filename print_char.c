@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:06:35 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 18:37:51 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:33:51 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ wchar_t	*ft_wstrjoin(wchar_t const *s1, wchar_t const *s2)
 
 	if (s1 == 0 || s2 == 0)
 		return (NULL);
-	str = (wchar_t *)malloc(sizeof(wchar_t) * (ft_wstrlen(s1) +
-				ft_wstrlen(s2) + 1));
+	if (!(str = (wchar_t *)malloc(sizeof(wchar_t) * (ft_wstrlen(s1) +
+				ft_wstrlen(s2) + 1))))
+		exit(1);
 	if (str != 0)
 	{
 		a = -1;

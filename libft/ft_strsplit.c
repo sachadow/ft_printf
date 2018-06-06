@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 19:37:54 by sderet            #+#    #+#             */
-/*   Updated: 2017/11/15 14:18:19 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:27:47 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static char	**nb_char(const char *str, int c, char **tab, char e)
 			b++;
 		}
 		if (b > 0)
-			tab[d] = (char*)malloc(sizeof(char) * (b + 1));
+			if (!(tab[d] = (char*)malloc(sizeof(char) * (b + 1))))
+				return (NULL);
 		d++;
 	}
 	return (tab);

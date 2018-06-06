@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 13:20:11 by sderet            #+#    #+#             */
-/*   Updated: 2017/11/17 15:00:26 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 18:57:48 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 	while (lst->next != NULL)
 	{
 		lst = lst->next;
-		second = (t_list*)malloc(sizeof(t_list));
+		if (!(second = (t_list*)malloc(sizeof(t_list))))
+			return (NULL);
 		third->next = second;
 		second = f(lst);
 		third = second;

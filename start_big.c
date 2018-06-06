@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 18:29:20 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 18:35:35 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:28:57 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	startbig_2(t_big *big)
 
 void	startbig(t_big *big)
 {
-	big->lists.len = (char**)malloc(sizeof(char*) * 7);
-	big->lists.actual_flags = (char*)malloc(sizeof(char) * 10);
-	big->lists.actual_len = (char*)malloc(sizeof(char) * 3);
+	if (!(big->lists.len = (char**)malloc(sizeof(char*) * 7)) ||
+			!(big->lists.actual_flags = (char*)malloc(sizeof(char) * 10)) ||
+			!(big->lists.actual_len = (char*)malloc(sizeof(char) * 3)))
+		exit(1);
 	big->lists.formats = "sSpdDioOuUxXcC%";
 	big->lists.flags = "#-+ 0.";
 	big->lists.len[0] = "hh";

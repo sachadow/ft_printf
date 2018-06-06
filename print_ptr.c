@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:05:10 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 19:18:22 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:48:17 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static char			*add_int_prc(t_big *big, char *val, unsigned long long nbr)
 {
 	int		total_length;
-	int		zeroes_length;
+	int		zero_length;
 	char	*zeroes_to_add;
 	char	*result;
 
@@ -29,12 +29,13 @@ static char			*add_int_prc(t_big *big, char *val, unsigned long long nbr)
 	else
 		total_length = big->lists.prc;
 	total_length -= (nbr != 0 || inacflags('.', *big) ? 0 : 2);
-	zeroes_length = total_length - ft_strlen(val);
-	if (zeroes_length > 0)
+	zero_length = total_length - ft_strlen(val);
+	if (zero_length > 0)
 	{
-		zeroes_to_add = (char*)malloc(sizeof(char) * (zeroes_length + 1));
-		zeroes_to_add[zeroes_length] = '\0';
-		ft_memset(zeroes_to_add, '0', sizeof(char) * zeroes_length);
+		if (!(zeroes_to_add = (char*)malloc(sizeof(char) * (zero_length + 1))))
+			exit(1);
+		zeroes_to_add[zero_length] = '\0';
+		ft_memset(zeroes_to_add, '0', sizeof(char) * zero_length);
 		result = ft_strjoin(zeroes_to_add, val);
 		free(val);
 		free(zeroes_to_add);
@@ -59,7 +60,9 @@ static char			*add_int_width(t_big *big, char *val)
 	spaces_length = total_length - ft_strlen(val);
 	if (spaces_length > 0)
 	{
-		spaces_to_add = (char*)malloc(sizeof(char) * (spaces_length + 1));
+		if (!(spaces_to_add = (char*)malloc(sizeof(char) *
+						(spaces_length + 1))))
+			exit(1);
 		spaces_to_add[spaces_length] = '\0';
 		ft_memset(spaces_to_add, ' ', sizeof(char) * spaces_length);
 		if (!inacflags('-', *big))
@@ -89,11 +92,12 @@ void				print_ptr(t_big *big, char *parse)
 {
 	char				*base;
 	unsigned long long	val;
-	char				*tmp;
 	char				*str;
 	int					a;
 
 	parse += 0;
+	str = 0;
+	a = 0;
 	val = (unsigned long long)va_arg(big->ap, void *);
 	base = "0123456789abcdef";
 	if (val == 0 && inacflags('.', *big) && big->lists.prc == 0)

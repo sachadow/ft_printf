@@ -6,7 +6,7 @@
 #    By: sderet <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/13 15:33:21 by sderet            #+#    #+#              #
-#    Updated: 2018/06/04 19:32:32 by sderet           ###   ########.fr        #
+#    Updated: 2018/06/06 19:47:09 by sderet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIBS = -L./libft -lft
 FRAMEW =
 OBJ = $(SRCS:%.c=%.o)
 CC = clang 
-CFLAGS = 
+CFLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 18:24:07 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:38:40 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static wchar_t		*add_int_prc(t_big *big, wchar_t *val)
 	zeroes_length = total_length - ft_wstrlen(val);
 	if (zeroes_length > 0)
 	{
-		zeroes_to_add = (wchar_t*)malloc(sizeof(wchar_t) * (zeroes_length + 1));
+		if (!(zeroes_to_add = (wchar_t*)malloc(sizeof(wchar_t) *
+						(zeroes_length + 1))))
+			exit(1);
 		zeroes_to_add[zeroes_length] = '\0';
 		ft_wstrset(zeroes_to_add, L'0', zeroes_length);
 		result = ft_wstrjoin(zeroes_to_add, val);
@@ -57,7 +59,9 @@ static wchar_t		*add_int_width(t_big *big, wchar_t *val)
 	spaces_length = total_length - ft_wstrlen(val);
 	if (spaces_length > 0)
 	{
-		spaces_to_add = (wchar_t*)malloc(sizeof(wchar_t) * (spaces_length + 1));
+		if (!(spaces_to_add = (wchar_t*)malloc(sizeof(wchar_t) *
+						(spaces_length + 1))))
+			exit(1);
 		ft_wstrset(spaces_to_add, L' ', spaces_length);
 		spaces_to_add[spaces_length] = '\0';
 		if (!inacflags('-', *big))
@@ -108,6 +112,8 @@ void				print_wstr(t_big *big, char *parse)
 	}
 	else
 		str = (wchar_t*)malloc(sizeof(wchar_t) * (ft_wstrlen(tmp) + 1));
+	if (str == 0)
+		exit(1);
 	a = -1;
 	while (tmp[++a])
 		str[a] = tmp[a];

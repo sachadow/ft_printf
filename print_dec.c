@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/04 18:46:13 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:33:00 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ static char			*add_int_prc(t_big *big, char *val)
 	zeroes_length = total_length - ft_strlen(val);
 	if (zeroes_length > 0)
 	{
-		zeroes_to_add = (char*)malloc(sizeof(char) * (zeroes_length + 1));
+		if (!(zeroes_to_add = (char*)malloc(sizeof(char) *
+						(zeroes_length + 1))))
+			exit(1);
 		zeroes_to_add[zeroes_length] = '\0';
 		ft_memset(zeroes_to_add, '0', sizeof(char) * zeroes_length);
 		result = ft_strjoin(zeroes_to_add, val);

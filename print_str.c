@@ -6,7 +6,7 @@
 /*   By: sderet <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/17 17:18:39 by sderet            #+#    #+#             */
-/*   Updated: 2018/06/06 15:46:34 by sderet           ###   ########.fr       */
+/*   Updated: 2018/06/06 19:38:25 by sderet           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ static char			*add_int_prc(t_big *big, char *val)
 	zeroes_length = total_length - ft_strlen(val);
 	if (zeroes_length > 0)
 	{
-		zeroes_to_add = (char*)malloc(sizeof(char) * (zeroes_length + 1));
+		if (!(zeroes_to_add = (char*)malloc(sizeof(char) *
+						(zeroes_length + 1))))
+			exit(1);
 		zeroes_to_add[zeroes_length] = '\0';
 		ft_memset(zeroes_to_add, '0', sizeof(char) * zeroes_length);
 		result = ft_strjoin(zeroes_to_add, val);
@@ -57,7 +59,9 @@ static char			*add_int_width(t_big *big, char *val)
 	spaces_length = total_length - ft_strlen(val);
 	if (spaces_length > 0)
 	{
-		spaces_to_add = (char*)malloc(sizeof(char) * (spaces_length + 1));
+		if (!(spaces_to_add = (char*)malloc(sizeof(char) *
+						(spaces_length + 1))))
+			exit(1);
 		spaces_to_add[spaces_length] = '\0';
 		ft_memset(spaces_to_add, ' ', sizeof(char) * spaces_length);
 		if (!inacflags('-', *big))
